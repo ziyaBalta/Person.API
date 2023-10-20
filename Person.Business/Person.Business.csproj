@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Person.Data\Person.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Logic\" />
+  </ItemGroup>
+
 </Project>
