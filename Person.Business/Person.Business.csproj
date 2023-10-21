@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Person.Data\Person.Data.csproj" />
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Logic\" />
+    <ProjectReference Include="..\Person.Data\Person.Data.csproj" />
   </ItemGroup>
 
 </Project>
