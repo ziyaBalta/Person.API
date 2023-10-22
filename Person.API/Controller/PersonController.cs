@@ -34,5 +34,16 @@ namespace Person.API.Controller
             return personsId;
         }
 
+
+        public List<PersonsDto> GetAll()
+        {
+            PersonsLogic personLogic = new PersonsLogic(_context, _userId);
+            var persons = personLogic.GetAll();
+            return persons;
+        }
+
+
+
+
     }
 }

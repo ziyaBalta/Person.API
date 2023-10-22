@@ -26,8 +26,12 @@ namespace Person.Data.Repo
             _context.Add(persons);
             _context.SaveChanges();
             return persons;
+        }
 
-
+        public List<Persons> GetAll()
+        {
+            var Persons = _context.Persons.ToList();
+            return Persons;
         }
 
 

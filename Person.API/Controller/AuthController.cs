@@ -29,7 +29,7 @@ namespace Person.API.Controller
         }
 
 
-        [AllowAnonymous]
+        
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)

@@ -35,5 +35,14 @@ namespace Person.Business.Logic
             return companyResult.Id;
         }
 
+        public List<PersonsDto> GetAll()
+        {
+            PersonsRepo personRepo = new PersonsRepo(_context, _userId);
+
+            var personResult = personRepo.GetAll();
+            var person = _mapper.Map<List<PersonsDto>>(personResult);
+            return person;
+        }
+
     }
 }
