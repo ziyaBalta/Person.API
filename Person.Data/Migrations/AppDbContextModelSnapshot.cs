@@ -17,7 +17,7 @@ namespace Person.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "7.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -249,6 +249,9 @@ namespace Person.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("PersonsId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("text");
@@ -268,6 +271,8 @@ namespace Person.Data.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PersonsId");
 
                     b.ToTable("ContactInformations");
                 });
@@ -359,6 +364,20 @@ namespace Person.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Person.Data.Models.ContactInformation", b =>
+                {
+                    b.HasOne("Person.Data.Models.Persons", null)
+                        .WithMany("contactinformations")
+                        .HasForeignKey("PersonsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Person.Data.Models.Persons", b =>
+                {
+                    b.Navigation("contactinformations");
                 });
 #pragma warning restore 612, 618
         }

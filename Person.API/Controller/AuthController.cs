@@ -1,13 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Person.Data.Auth;
-using Person.Data;
+﻿using Microsoft.AspNetCore.Identity;       
+using Microsoft.AspNetCore.Mvc;           
+using Person.Data;                        
+using Microsoft.EntityFrameworkCore;      
+using Person.Business.Dto;                
+using Person.Business.Logic;              
+using AutoMapper;                         
+using Person.Data.Auth;                   
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace Person.API.Controller
 {
@@ -19,21 +23,45 @@ namespace Person.API.Controller
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly PrjSettings _prjSettings;
+        private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
+        string _userId = "";
 
-        public AuthController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+
+        public AuthController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, AppDbContext context, IMapper mapper)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _prjSettings = configuration.GetSection(nameof(PrjSettings)).Get<PrjSettings>();
+            _context = context;
+            _mapper = mapper;
+        }
 
+        [HttpGet]
+        [Route("getall")]
+        public List<PersonsDto> GetAll()
+        {
+            PersonsLogic personLogic = new PersonsLogic(_context, _userId , _mapper);
+            var persons = personLogic.GetAll();
+            return persons; 
+        }
+
+        [HttpPost]
+        [Route("add")]
+        public int Add(PersonsDto person)
+        {
+            PersonsLogic personsLogic = new PersonsLogic(_context, _userId , _mapper);
+            var personsId = personsLogic.AddPersons(person);
+            return personsId;
         }
 
 
-        
+
+
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
-        {
+ {
 
 
             var user = await _userManager.FindByEmailAsync(model.Email);

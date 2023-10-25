@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace Person.Data.Repo
 {
@@ -12,12 +13,14 @@ namespace Person.Data.Repo
     {
         private readonly AppDbContext _context;
         private string _userId;
+        private readonly IMapper _mapper;
 
 
-        public PersonsRepo(AppDbContext context, string userId)
+        public PersonsRepo(AppDbContext context, string userId , IMapper mapper)
         {
             _context = context;
             _userId = userId;
+            _mapper = mapper;
         }
 
         public Persons Add(Persons persons)

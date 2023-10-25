@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Person.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class firstmigration : Migration
+    public partial class newDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -54,27 +54,6 @@ namespace Person.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ContactInformations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Street = table.Column<string>(type: "text", nullable: false),
-                    District = table.Column<string>(type: "text", nullable: false),
-                    Province = table.Column<string>(type: "text", nullable: false),
-                    Address = table.Column<string>(type: "text", nullable: false),
-                    Phone = table.Column<string>(type: "text", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreateUserId = table.Column<string>(type: "text", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    UpdateUserId = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ContactInformations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Persons",
                 columns: table => new
                 {
@@ -90,7 +69,7 @@ namespace Person.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Persons", x => x.Id);
+                   // table.PrimaryKey("PK_Persons", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -199,6 +178,34 @@ namespace Person.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ContactInformations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PersonsId = table.Column<int>(type: "integer", nullable: false),
+                    Street = table.Column<string>(type: "text", nullable: false),
+                    District = table.Column<string>(type: "text", nullable: false),
+                    Province = table.Column<string>(type: "text", nullable: false),
+                    Address = table.Column<string>(type: "text", nullable: false),
+                    Phone = table.Column<string>(type: "text", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreateUserId = table.Column<string>(type: "text", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdateUserId = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContactInformations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ContactInformations_Persons_PersonsId",
+                        column: x => x.PersonsId,
+                        principalTable: "Persons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -235,6 +242,11 @@ namespace Person.Data.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ContactInformations_PersonsId",
+                table: "ContactInformations",
+                column: "PersonsId");
         }
 
         /// <inheritdoc />
@@ -259,13 +271,13 @@ namespace Person.Data.Migrations
                 name: "ContactInformations");
 
             migrationBuilder.DropTable(
-                name: "Persons");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Persons");
         }
     }
 }

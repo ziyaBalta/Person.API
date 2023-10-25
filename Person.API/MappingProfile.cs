@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using System.Drawing;
 using Person.Data.Models;
 using Person.Business.Dto;
+using Person.Data.Auth;
 
 namespace Person.API
 {
@@ -12,7 +12,8 @@ namespace Person.API
         {
             CreateMap<ContactInformation, ContactInformationDto>().ReverseMap();
             CreateMap<Persons, PersonsDto>().ReverseMap();
-  
+            CreateMap<ApplicationUser, UserDto>().ReverseMap();
+
 
 
         }

@@ -1,4 +1,5 @@
 ﻿
+
 using AutoMapper;
 using Person.Business.Dto;
 using Person.Data;
@@ -19,16 +20,17 @@ namespace Person.Business.Logic
         private readonly IMapper _mapper;
         string _userId = "";
 
-        public PersonsLogic(AppDbContext context, string userId)
+        public PersonsLogic(AppDbContext context, string userId,IMapper mapper)
         {
             _context = context;
             _userId = userId;
+            _mapper = mapper;
 
         }
 
         public int AddPersons(PersonsDto personsDto)
         {
-            PersonsRepo personsRepo = new PersonsRepo(_context, _userId);
+            PersonsRepo personsRepo = new PersonsRepo(_context, _userId ,_mapper);
 
             var persons = _mapper.Map<Persons>(personsDto);
             var companyResult = personsRepo.Add(persons);
@@ -37,7 +39,7 @@ namespace Person.Business.Logic
 
         public List<PersonsDto> GetAll()
         {
-            PersonsRepo personRepo = new PersonsRepo(_context, _userId);
+            PersonsRepo personRepo = new PersonsRepo(_context, _userId, _mapper);
 
             var personResult = personRepo.GetAll();
             var person = _mapper.Map<List<PersonsDto>>(personResult);
